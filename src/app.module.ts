@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TraderModule } from './trader/trader.module'
 import { DatabaseModule } from './database/database.module'
+import { AdminModule } from './admin/admin.module'
 
 @Module({
   imports: [
@@ -10,7 +11,8 @@ import { DatabaseModule } from './database/database.module'
       envFilePath: ['.env']
     }),
     DatabaseModule,
-    TraderModule
+    TraderModule,
+    AdminModule
   ],
   controllers: [],
   providers: []
