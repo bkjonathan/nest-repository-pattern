@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { TraderModule } from './trader/trader.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       database: 'nest_test',
       entities: [],
       synchronize: true
-    })
+    }),
+    TraderModule
   ],
   controllers: [],
   providers: []
