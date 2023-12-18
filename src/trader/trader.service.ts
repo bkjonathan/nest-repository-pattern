@@ -1,26 +1,38 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateTraderDto } from './dto/create-trader.dto'
 import { UpdateTraderDto } from './dto/update-trader.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Trader } from '@app/trader/entities/trader.entity'
+import { DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm'
 
 @Injectable()
 export class TraderService {
-  create(createTraderDto: CreateTraderDto) {
-    return 'This action adds a new trader' + createTraderDto
+  constructor(@InjectRepository(Trader) private readonly traderRepository: Repository<Trader>) {}
+  async create(createTraderDto: CreateTraderDto): Promise<InsertResult> {
+    try {
+      return this.traderRepository.insert(createTraderDto)
+    } catch (e) {
+      throw new BadRequestException(e.message)
+    }
   }
 
-  findAll() {
-    return `This action returns all trader`
+  findAll(): Promise<Trader[]> {
+    return this.traderRepository.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trader`
+  findOne(id: number): Promise<Trader | null> {
+    return this.traderRepository.findOneBy({ id })
   }
 
-  update(id: number, updateTraderDto: UpdateTraderDto) {
-    return `This action updates a #${id} trader ${updateTraderDto}`
+  async update(id: number, updateTraderDto: UpdateTraderDto): Promise<UpdateResult> {
+    try {
+      return this.traderRepository.update(id, updateTraderDto)
+    } catch (e) {
+      throw new BadRequestException(e.message)
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} trader`
+  remove(id: number): Promise<DeleteResult> {
+    return this.traderRepository.delete(id)
   }
 }

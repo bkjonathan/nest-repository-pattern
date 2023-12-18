@@ -13,7 +13,7 @@ import {
 } from '@common/common/constant'
 
 @Injectable()
-export class TypeORMConfigService implements TypeOrmOptionsFactory {
+export class TypeormConfigService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
   createTypeOrmOptions(): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions {
     return {

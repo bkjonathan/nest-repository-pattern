@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { TypeORMConfigService } from '@app/database/mariadb/typeORM-config.service'
-import { TypeormEntities } from '@app/database/mariadb/typeorm-entities'
+import { TypeormConfigService } from '@app/database/mariadb/typeorm-config.service'
+import { MariadbEntitiesModule } from '@app/database/mariadb/mariadb-entities.module'
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useClass: TypeORMConfigService
+      useClass: TypeormConfigService
     }),
-    TypeOrmModule.forFeature(TypeormEntities)
-  ]
+    MariadbEntitiesModule
+  ],
+  exports: [TypeOrmModule]
 })
 export class MariadbModule {}

@@ -6,7 +6,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 @Entity({ name: 'customers' })
 export class Trader {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: string
+  id: number
 
   @Column({ name: 'user', unique: true, length: 191 })
   username: string
