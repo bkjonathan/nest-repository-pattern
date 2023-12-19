@@ -29,14 +29,17 @@
 ## Installation
 
 ```bash
+$ cp .env.example .env
+```
+```bash
 $ yarn install
 ```
 
 ## Running the app
 
 ```bash
-# development
-$ yarn run start
+# setup docker
+$ yarn run docker
 
 # watch mode
 $ yarn run start:dev

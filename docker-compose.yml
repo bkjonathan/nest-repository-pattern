@@ -1,0 +1,45 @@
+version: "3.8"
+
+networks:
+  local:
+    name: local
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.0.0/16
+          gateway: 172.10.0.1
+
+
+services:
+  mariadb:
+    image: local-mariadb-5.5.64
+    container_name: local-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=RootPwd
+    ports:
+      - "3308:3306"
+    volumes:
+      - /.data/mariadb/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - local
+    tty: true
+
+  mongo:
+    image: mongodb/mongodb-community-server
+    container_name: local-mongo
+    hostname: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=RootPwd
+      - MONGO_USER=repo
+      - MONGO_PASSWORD=repo
+      - MONGO_DB=repo
+    volumes:
+      - ./.data/mongo:/data/db
+    ports:
+      - "27019:27017"
+    networks:
+      - local
+    tty: true
