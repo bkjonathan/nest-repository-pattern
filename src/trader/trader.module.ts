@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { TraderService } from './trader.service'
 import { TraderController } from './trader.controller'
-import { TraderRepository } from '@app/trader/trader.repository'
+import { TraderTypeormRepository } from '@app/trader/trader-typeorm.repository'
+import { TraderMongooseRepository } from '@app/trader/trader-mongoose.repository'
 
 @Module({
   controllers: [TraderController],
-  providers: [TraderService, TraderRepository]
+  providers: [TraderService, TraderTypeormRepository, TraderMongooseRepository]
 })
 export class TraderModule {}

@@ -19,16 +19,16 @@ export class TraderController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.traderService.findOne(+id)
+    return this.traderService.findOne(id)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTraderDto: UpdateTraderDto) {
-    return this.traderService.update(+id, updateTraderDto)
+    return this.traderService.update(id, updateTraderDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.traderService.remove(+id)
+    return this.traderService.remove(id)
   }
 }
