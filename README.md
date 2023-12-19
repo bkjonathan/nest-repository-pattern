@@ -1,44 +1,18 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
 ## Installation
 
 ```bash
 $ cp .env.example .env
+# create .env file and copy contents from .env.example 
 ```
 ```bash
 $ yarn install
+# install Dependencies
 ```
 
 ## Running the app
 
 ```bash
-# setup docker
+# run docker for mongodb and mariadb.
 $ yarn run docker
 
 # watch mode
@@ -48,6 +22,69 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Description
+
+[Nest](https://github.com/nestjs/nest) Respository Pattern with TypeORM and Mongoose
+
+You can provide the database configuration data in the .env file. If you prefer to use MongoDB, simply inject the MongooseDbModule into the DatabaseModule. Alternatively, if you want to use MySQL or MariaDB, inject the MariadbModule into the DatabaseModule.
+
+````bash
+@Module({
+imports: [MariadbModule, MongooseDbModule]
+})
+````
+
+#### `To create a new TypeORM Entity (Bank Entity), follow these steps:`
+
+1. Create the Bank Entity and update the mariadb-entities.module/TypeormEntities array.
+
+2. After updating, create the BankTypeormRepository class and extend it from TypeormRepository.
+
+3. Now, you can inject it into services.
+
+````bash
+#in bank.entity
+export class Bank {
+    @PrimaryGeneratedColumn({ type: 'bigint' })
+    id: number
+}
+
+#in mariadb-entities-module
+
+export const TypeormEntities = [Trader,Bank]
+
+#in BankTypeorm
+
+export class BankTypeormRepository extends TypeormRepository<Bank>
+} {
+  constructor(@InjectRepository(Bank) private readonly repository: Repository<Bank>) {
+    super(repository.target, repository.manager, repository.queryRunner)
+  }
+}
+````
+
+#### ` To create a new Mongoose Model (Bank Collection), follow these steps:`
+
+1. Create the Bank Schema and update the mongoose-model.module/allModels array.
+
+2. After updating, create the BankMongooseRepository class and extend it from MongooseRepository.
+
+3. Now, you can inject it into services.
+
+
+## Inject into Services
+```bash
+import { TraderMongooseRepository } from '@app/trader/trader-mongoose.repository'
+
+ constructor(private readonly traderRepository: TraderMongooseRepository) {}
+ 
+ #or
+ 
+ import { TraderTypeormRepository } from '@app/trader/trader-typeorm.repository'
+ 
+ constructor(private readonly traderRepository: TraderTypeormRepository) {}
+ 
+```
 ## Test
 
 ```bash
@@ -61,15 +98,7 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
