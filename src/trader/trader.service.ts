@@ -3,7 +3,7 @@ import { CreateTraderDto } from './dto/create-trader.dto'
 import { UpdateTraderDto } from './dto/update-trader.dto'
 import { Trader } from '@app/trader/entities/trader.schema'
 // import { TraderTypeormRepository } from '@app/trader/trader-typeorm.repository'
-import { TraderMongooseRepository } from '@app/trader/trader-mongoose.repository'
+import { TraderMongooseRepository } from '@app/trader/repository/trader-mongoose.repository'
 
 @Injectable()
 export class TraderService {
